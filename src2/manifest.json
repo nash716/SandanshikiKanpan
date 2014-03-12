@@ -1,0 +1,19 @@
+{
+	"name": "三段式甲板 自動プロキシ設定",
+	"description": "技術的な制約により、本体より行うことのできない設定を自動で行う拡張機能です。",
+	"version": "0.1",
+	"background": {
+		"scripts": [
+			"app/background.js"
+		]
+	},
+	"manifest_version": 2,
+	"icons": {
+		"16": "manifest/icon16.png",
+		"48": "manifest/icon48.png",
+		"128": "manifest/icon128.png"
+	},
+	"permissions": [
+		"proxy"
+	]
+}
