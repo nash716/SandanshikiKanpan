@@ -25,5 +25,8 @@
 		"tcpServer" : {
 			"listen": [ ":8549" ]
 		}
-	}
+	},
+	"permissions": [
+		"webview"
+	]
 }
