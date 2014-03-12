@@ -1,0 +1,29 @@
+{
+	"name": "三段式甲板",
+	"description": "艦これ専用ブラウザ",
+	"version": "0.1",
+	"app": {
+		"background": {
+			"scripts": [
+				"util/Utility.js",
+				"proxy/SocketAssign.js",
+				"proxy/Callbacks.js",
+				"proxy/Proxy.js",
+				"app/background.js"
+			]
+		}
+	},
+	"icons": {
+		"16": "manifest/icon16.png",
+		"48": "manifest/icon48.png",
+		"128": "manifest/icon128.png"
+	},
+	"sockets": {
+		"tcp" : {
+			"connect": ["*:*" ]
+		},
+		"tcpServer" : {
+			"listen": [ ":8549" ]
+		}
+	}
+}
