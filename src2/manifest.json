@@ -1,6 +1,6 @@
 {
-	"name": "三段式甲板 自動プロキシ設定",
-	"description": "技術的な制約により、本体より行うことのできない設定を自動で行う拡張機能です。",
+	"name": "三段式甲板",
+	"description": "艦これ専用ブラウザ",
 	"version": "0.1",
 	"background": {
 		"scripts": [

@@ -1,4 +1,5 @@
-var DEBUG_MODE = false;
+var DEBUG_MODE = true
+var EXTENSION_ID = 'aekcocjibheiolokknkcbmidmcklgmaa';
 
 // prototype 拡張
 

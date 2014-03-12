@@ -1,10 +1,5 @@
 ﻿chrome.app.runtime.onLaunched.addListener(function() {
-	chrome.app.window.create('../browser/window.html', {
-		'bounds': {
-			'width': 800,
-			'height': 480
-		}
-	});
+	var proxy = new Proxy().start();
+	
+	var port = chrome.runtime.connect(EXTENSION_ID);
 });
-
-new Proxy().start();
