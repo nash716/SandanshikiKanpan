@@ -15,3 +15,7 @@ chrome.proxy.settings.set({
 	value: config,
 	scope: 'regular'
 }, function() {});
+
+chrome.runtime.onConnectExternal.addListener(function(port) {
+	console.log('connected!');
+});
