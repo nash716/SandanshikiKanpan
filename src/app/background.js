@@ -1,5 +1,8 @@
-﻿chrome.app.runtime.onLaunched.addListener(function() {
-	var proxy = new Proxy().start();
+﻿var proxy, port;
+
+chrome.app.runtime.onLaunched.addListener(function() {
+	proxy = new Proxy();
+	proxy.start();
 	
-	var port = chrome.runtime.connect(EXTENSION_ID);
+	port = chrome.runtime.connect(EXTENSION_ID);
 });
