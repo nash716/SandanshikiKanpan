@@ -66,6 +66,8 @@ ProxyCallbacks.tcp.onReceive = function(info) {
 ProxyCallbacks.tcp.remote.process = function(info, clientId) {
 	Util.log('[Proxy] Data was came from REMOTE!');
 	
+	this.socketAssign[clientId].remote.data.push(new Data(new Date() * 1, info.data));
+	
 	chrome.sockets.tcp.send(clientId, info.data, Util.error('[Proxy] Sent data to LOCAL!'));
 	
 	// TODO
@@ -74,6 +76,10 @@ ProxyCallbacks.tcp.remote.process = function(info, clientId) {
 
 ProxyCallbacks.tcp.local.process = function(info) {
 	Util.log('[Proxy] Data was came from LOCAL!');
+	
+	if (this.socketAssign[info.socketId].getListeners('client-data').length == 0) {
+		this.socketAssign[info.socketId].on('client-data', ProxyCallbacks.tcp.remote.send.bind(this));
+	}
 	
 	info.data.getString(function(text) {
 		var headers = text.split('\r\n');
@@ -94,6 +100,8 @@ ProxyCallbacks.tcp.local.process = function(info) {
 			for (var i = 0; i < headers.length; i++) {
 				if (headers[i].indexOf('Proxy-Connection') == 0) {
 					headers[i] = headers[i].replace('Proxy-Connection', 'Connection');
+				} else if (headers[i].indexOf('Content-Length') == 0) {
+					this.socketAssign[info.socketId].client.contentLength = parseInt(headers[i].split(' ')[1]) || -1;
 				}
 			}
 			
@@ -101,20 +109,16 @@ ProxyCallbacks.tcp.local.process = function(info) {
 				this.socketAssign[info.socketId].data = arraybuffer;
 				
 				chrome.sockets.tcp.create({}, function(createInfo) {
-					ProxyCallbacks.tcp.remote.create.bind(this)(createInfo, info.socketId);
+					ProxyCallbacks.tcp.remote.create.bind(this)(createInfo, info.socketId, arraybuffer);
 				}.bind(this));
 			}.bind(this));
 		} else {
-			// TODO: setTimeout はお粗末なのでそのうちどうにかする
-			setTimeout(function() {
-				chrome.sockets.tcp.send(this.socketAssign[info.socketId].remoteId, info.data, Util.error('[Proxy][POST] Sent data to REMOTE!'));
-				chrome.sockets.tcp.setPaused(this.socketAssign[info.socketId].remoteId, false);
-			}.bind(this), 100);
+			this.socketAssign[info.socketId].client.data.push(new Data(new Date() * 1, info.data));
 		}
 	}.bind(this));
 };
 
-ProxyCallbacks.tcp.remote.create = function(createInfo, clientId) {
+ProxyCallbacks.tcp.remote.create = function(createInfo, clientId, data) {
 	Util.log('[Proxy] Creating TCP Connection...');
 	
 	var assign = this.socketAssign[clientId];
@@ -122,19 +126,40 @@ ProxyCallbacks.tcp.remote.create = function(createInfo, clientId) {
 	assign.remoteId = createInfo.socketId;
 	
 	chrome.sockets.tcp.connect(createInfo.socketId, assign.url.host, assign.url.port, function(result) {
-		ProxyCallbacks.tcp.remote.connect.bind(this)(result, clientId);
+		ProxyCallbacks.tcp.remote.connect.bind(this)(result, clientId, data);
 	}.bind(this));
 };
 
-ProxyCallbacks.tcp.remote.connect = function(result, clientId) {
+ProxyCallbacks.tcp.remote.connect = function(result, clientId, data) {
 	Util.log('[Proxy] Connecting to REMOTE!');
 	
 	if (result < 0) {
 		throw new Error();
 	}
 	
-	chrome.sockets.tcp.send(this.socketAssign[clientId].remoteId, this.socketAssign[clientId].data, function(sendInfo) {
+	chrome.sockets.tcp.send(this.socketAssign[clientId].remoteId, data, function(sendInfo) {
 		//this.socketAssign[clientId].data = null;
+		//TODO error code
+		
+		this.socketAssign[clientId].trigger('client-data', [ clientId ]);
 	}.bind(this));
 	chrome.sockets.tcp.setPaused(this.socketAssign[clientId].remoteId, false);
 };
+
+ProxyCallbacks.tcp.remote.send = function(clientId) {
+	Util.log('[Proxy][DATA] Sending data to REMOTE!');
+	
+	for (var i = 0; i < this.socketAssign[clientId].client.data.length; i++) {
+		chrome.sockets.tcp.send(this.socketAssign[clientId].remoteId, this.socketAssign[clientId].client.data[i].value, function(sendInfo) {
+			// TODO error code
+			this.socketAssign[clientId].client.bytesSent += sendInfo.bytesSent;
+			Util.log('Content-Length: %d, bytesSent: %d', this.socketAssign[clientId].client.contentLength, this.socketAssign[clientId].client.bytesSent);
+			
+			if (this.socketAssign[clientId].client.contentLength == this.socketAssign[clientId].client.bytesSent) {
+				// ローカルから来たリクエストをリモートに正常に送り終わった
+				// POST データが必要な時は煮るなり焼くなりする　必要ないときはとっとと消去
+				
+			}
+		}.bind(this));
+	}
+}

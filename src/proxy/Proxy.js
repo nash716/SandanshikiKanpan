@@ -3,6 +3,8 @@ var Proxy = function() {
 	this.serverSocketId = -1;
 };
 
+heir.inherit(Proxy, EventEmitter);
+
 Proxy.prototype.start = function() {
 	Util.log('[Proxy] Initializing...');
 	

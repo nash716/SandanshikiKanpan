@@ -6,6 +6,9 @@
 		"background": {
 			"scripts": [
 				"util/Utility.js",
+				"util/EventEmitter.js",
+				"util/Heir.js",
+				"proxy/Data.js",
 				"proxy/SocketAssign.js",
 				"proxy/Callbacks.js",
 				"proxy/Proxy.js",
