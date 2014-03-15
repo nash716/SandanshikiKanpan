@@ -68,11 +68,51 @@ ProxyCallbacks.tcp.remote.process = function(info, clientId) {
 	
 	this.socketAssign[clientId].remote.data.push(new Data(new Date() * 1, info.data));
 	
-	chrome.sockets.tcp.send(clientId, info.data, Util.error('[Proxy] Sent data to LOCAL!'));
+	chrome.sockets.tcp.send(clientId, info.data, function(sendInfo) {
+		// TODO error code
+		this.socketAssign[clientId].remote.bytesSent += sendInfo.bytesSent;
+		Util.log('[REMOTE] Content-Length: %d, bytesSent: %d', this.socketAssign[clientId].remote.contentLength, this.socketAssign[clientId].remote.bytesSent);
+		
+		ProxyCallbacks.tcp.remote.checkData.bind(this)(clientId);
+	}.bind(this));
+	
+	info.data.slice(0, 7).getString(function(text) { // 受信したデータが HTTP ヘッダの最初だった！！！！ときの処理
+		if (text.indexOf('HTTP/1.') == 0) {
+			info.data.getString(function(text) {
+				var headers = text.split('\r\n');
+				
+				for (var i = 0; i < headers.length; i++) {
+					if (headers[i].indexOf('Content-Length') == 0) {
+						//this.socketAssign[clientId].remote.bytesSent -= info.data.byteLength;
+						this.socketAssign[clientId].remote.contentLength = parseInt(headers[i].split(' ')[1]) || -1;
+						
+						this.socketAssign[clientId].trigger('response-parsed', [ clientId ]);
+					}
+				}
+			}.bind(this));
+		}
+	}.bind(this));
 	
 	// TODO
 	Util.log(this.socketAssign[clientId].url.fullPath);
 };
+
+ProxyCallbacks.tcp.remote.checkData = function(clientId) {
+	if (this.socketAssign[clientId].remote.contentLength != -1 && this.socketAssign[clientId].remote.bytesSent >= this.socketAssign[clientId].remote.contentLength) {
+		// リモートからのデータをローカルに正常に送り終わった
+		// データが必要な時は煮るなり焼くなりする　必要ないときはとっとと消去
+		// どちらにせよソケットは閉じてあげましょう
+		
+		Util.log('[Proxy] COMPLETED!!');
+		
+		this.socketAssign[clientId].isCompleted = true;
+		
+		//chrome.sockets.tcp.disconnect(this.socketAssign[clientId].clientId);
+		//chrome.sockets.tcp.disconnect(this.socketAssign[clientId].remoteId);
+		
+		this.trigger(this.socketAssign[clientId].url.fullPath, [ clientId ]);
+	}
+}
 
 ProxyCallbacks.tcp.local.process = function(info) {
 	Util.log('[Proxy] Data was came from LOCAL!');
@@ -124,6 +164,8 @@ ProxyCallbacks.tcp.remote.create = function(createInfo, clientId, data) {
 	var assign = this.socketAssign[clientId];
 	
 	assign.remoteId = createInfo.socketId;
+	
+	assign.on('response-parsed', ProxyCallbacks.tcp.remote.checkData.bind(this));
 	
 	chrome.sockets.tcp.connect(createInfo.socketId, assign.url.host, assign.url.port, function(result) {
 		ProxyCallbacks.tcp.remote.connect.bind(this)(result, clientId, data);

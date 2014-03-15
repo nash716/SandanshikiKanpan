@@ -8,6 +8,7 @@
 				"util/Utility.js",
 				"util/EventEmitter.js",
 				"util/Heir.js",
+				"app/Constants.js",
 				"proxy/Data.js",
 				"proxy/SocketAssign.js",
 				"proxy/Callbacks.js",

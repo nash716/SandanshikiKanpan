@@ -6,12 +6,12 @@ var SocketAssign = function() {
 	this.remote = {
 		contentLength: -1,
 		bytesSent: 0,
-		data: [ ]
+		data: [ ] // （今のところ）HTTP ヘッダを含めたすべてのデータが入ってる
 	};
 	this.client = {
 		contentLength: -1,
 		bytesSent: 0,
-		data: [ ]
+		data: [ ] // （今のところ）POST データだけが入ってる
 	};
 };
 
