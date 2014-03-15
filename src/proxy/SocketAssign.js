@@ -2,9 +2,11 @@ var SocketAssign = function() {
 	this.clientId = -1;
 	this.remoteId = -1;
 	this.isCompleted = false;
+	this.isPosted = false;
 	this.url = null;
 	this.remote = {
 		contentLength: -1,
+		contentLengthByHeader: false,
 		bytesSent: 0,
 		data: [ ] // （今のところ）HTTP ヘッダを含めたすべてのデータが入ってる
 	};

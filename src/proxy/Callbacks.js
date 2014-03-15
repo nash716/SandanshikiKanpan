@@ -40,6 +40,21 @@ ProxyCallbacks.server.onAccept = function(info) {
 ProxyCallbacks.tcp.onReceiveError = function(info) {
 	// TODO
 	Util.log('[Proxy] Receive Error!!!');
+	
+	var flag = false, // false: Data from local, true: Data from remote
+	    clientId = -1;
+	
+	for (var key in this.socketAssign) {
+		if (this.socketAssign[key].remoteId == info.socketId) {
+			flag = true;
+			clientId = this.socketAssign[key].clientId;
+			break;
+		}
+	}
+	
+	if (!this.socketAssign[key].isCompleted) {
+		ProxyCallbacks.tcp.remote.checkData.bind(this)(flag ? clientId : info.socketId, true);
+	}
 };
 
 ProxyCallbacks.tcp.onReceive = function(info) {
@@ -76,7 +91,7 @@ ProxyCallbacks.tcp.remote.process = function(info, clientId) {
 		ProxyCallbacks.tcp.remote.checkData.bind(this)(clientId);
 	}.bind(this));
 	
-	info.data.slice(0, 7).getString(function(text) { // 受信したデータが HTTP ヘッダの最初だった！！！！ときの処理
+	info.data.slice(0, 100).getString(function(text) { // 受信したデータが HTTP ヘッダの最初だった！！！！ときの処理
 		if (text.indexOf('HTTP/1.') == 0) {
 			info.data.getString(function(text) {
 				var headers = text.split('\r\n');
@@ -91,14 +106,21 @@ ProxyCallbacks.tcp.remote.process = function(info, clientId) {
 				}
 			}.bind(this));
 		}
+		
+		var lines = text.split('\r\n');
+		
+		if (parseInt(lines[0], 16).toString(16).length == lines[0].length) { // 最初の行が16進数だった！（Content-Length）
+			this.socketAssign[clientId].remote.contentLength = parseInt(lines[0], 16);
+			this.socketAssign[clientId].trigger('response-parsed', [ clientId ]);
+		}
 	}.bind(this));
 	
 	// TODO
 	Util.log(this.socketAssign[clientId].url.fullPath);
 };
 
-ProxyCallbacks.tcp.remote.checkData = function(clientId) {
-	if (this.socketAssign[clientId].remote.contentLength != -1 && this.socketAssign[clientId].remote.bytesSent >= this.socketAssign[clientId].remote.contentLength) {
+ProxyCallbacks.tcp.remote.checkData = function(clientId, disconnected) {
+	if (disconnected || (this.socketAssign[clientId].remote.contentLength != -1 && this.socketAssign[clientId].remote.bytesSent >= this.socketAssign[clientId].remote.contentLength)) {
 		// リモートからのデータをローカルに正常に送り終わった
 		// データが必要な時は煮るなり焼くなりする　必要ないときはとっとと消去
 		// どちらにせよソケットは閉じてあげましょう
