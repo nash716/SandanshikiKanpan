@@ -4,6 +4,7 @@
 	"version": "0.1",
 	"background": {
 		"scripts": [
+			"app/Kancolle.js",
 			"app/background.js"
 		]
 	},
@@ -14,6 +15,7 @@
 		"128": "manifest/icon128.png"
 	},
 	"permissions": [
-		"proxy"
+		"proxy",
+		"tabs"
 	]
 }
