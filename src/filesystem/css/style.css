@@ -1,0 +1,17 @@
+html {
+	display: table;
+	width: 400px;
+	height: 150px;
+	padding: 10px;
+}
+
+body {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+button {
+	display: inline-block;
+	margin-top: 10px;
+}

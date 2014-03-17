@@ -29,5 +29,9 @@
 		"tcpServer" : {
 			"listen": [ ":8549" ]
 		}
-	}
+	},
+	"permissions": [
+		{ "fileSystem": [ "directory", "write", "retainEntries" ] },
+		"storage"
+	]
 }
