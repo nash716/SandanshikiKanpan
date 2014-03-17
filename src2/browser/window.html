@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>三段式甲板</title>
+		<script src="js/jquery.js"></script>
+		<script src="js/tipsy.js"></script>
+		<script src="js/main.js"></script>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/fontello.css">
+		<link rel="stylesheet" href="css/tipsy.css">
+	</head>
+	<body>
+		<div id="header">
+			<div title="次の司令部レベルになるまで">
+				<span class="icon">O</span>
+				<span class="label" id="admiralExp">--</span>
+			</div>
+			<div title="艦娘保有数">
+				<span class="icon">M</span>
+				<span class="label" id="shipsNum">--</span>
+			</div>
+			<div title="装備保有数">
+				<span class="icon">R</span>
+				<span class="label" id="itemsNum">--</span>
+			</div>
+			<div title="高速修復材">
+				<span class="icon">N</span>
+				<span class="label" id="bucketsNum">--</span>
+			</div>
+			<div title="高速建造材">
+				<span class="icon">L</span>
+				<span class="label" id="burnersNum">--</span>
+			</div>
+			<div class="button" title="リロード" id="reload">
+				<span class="icon">F</span>
+			</div>
+			<div class="button" title="スクリーンショット" id="screenshot">
+				<span class="icon">G</span>
+			</div>
+			<div class="button" title="設定" id="setting">
+				<span class="icon">H</span>
+			</div>
+		</div>
+		<div id="game">
+			<iframe src="http://preflight.cc/" width="800" height="480"></iframe>
+		</div>
+		<div id="info">
+			<div id="quest">
+				<div class="underline quest-underline" id="quest1-underline"></div>
+				<div class="underline quest-underline" id="quest2-underline"></div>
+				<div class="underline quest-underline" id="quest3-underline"></div>
+				<div class="underline quest-underline" id="quest4-underline"></div>
+				<div class="underline quest-underline" id="quest5-underline"></div>
+				<div class="tooltip quest-tooltip" id="quest1-tooltip"></div>
+				<div class="tooltip quest-tooltip" id="quest2-tooltip"></div>
+				<div class="tooltip quest-tooltip" id="quest3-tooltip"></div>
+				<div class="tooltip quest-tooltip" id="quest4-tooltip"></div>
+				<div class="tooltip quest-tooltip" id="quest5-tooltip"></div>
+				<table cellspacing="0" cellpadding="0" id="quest-table">
+					<thead>
+						<tr><td></td><td></td><td class="left">任務</td></tr>
+					</thead>
+					<tbody>
+						<tr id="quest1"><td class="quest-progress" id="quest1-progress">任務1</td><td class="quest-type" id="quest1-type">--</td><td class="quest-name left" id="quest1-name">未取得</td></tr>
+						<tr id="quest2"><td class="quest-progress" id="quest2-progress">任務2</td><td class="quest-type" id="quest2-type">--</td><td class="quest-name left" id="quest2-name">未取得</td></tr>
+						<tr id="quest3"><td class="quest-progress" id="quest3-progress">任務3</td><td class="quest-type" id="quest3-type">--</td><td class="quest-name left" id="quest3-name">未取得</td></tr>
+						<tr id="quest4"><td class="quest-progress" id="quest4-progress">任務4</td><td class="quest-type" id="quest4-type">--</td><td class="quest-name left" id="quest4-name">未取得</td></tr>
+						<tr id="quest5"><td class="quest-progress" id="quest5-progress">任務5</td><td class="quest-type" id="quest5-type">--</td><td class="quest-name left" id="quest5-name">未取得</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="kantai1">
+				<div class="tooltip kanmusu-tooltip" id="kanmusu1-tooltip"></div>
+				<div class="tooltip kanmusu-tooltip" id="kanmusu2-tooltip"></div>
+				<div class="tooltip kanmusu-tooltip" id="kanmusu3-tooltip"></div>
+				<div class="tooltip kanmusu-tooltip" id="kanmusu4-tooltip"></div>
+				<div class="tooltip kanmusu-tooltip" id="kanmusu5-tooltip"></div>
+				<div class="tooltip kanmusu-tooltip" id="kanmusu6-tooltip"></div>
+				<table cellspacing="0" cellpadding="0" id="kantai1-table">
+					<thead>
+						<tr><td colspan="6" id="kantai1-name">第一艦隊</td></tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="kantai1-lv" id="kanmusu1-lv">--</td><td class="kantai1-cond icon" id="kanmusu1-cond"></td><td class="kantai1-name" id="kanmusu1-name">なし</td>
+							<td class="kantai1-lv" id="kanmusu2-lv">--</td><td class="kantai1-cond icon" id="kanmusu2-cond"></td><td class="kantai1-name" id="kanmusu2-name">なし</td>
+						</tr>
+						<tr>
+							<td class="kantai1-lv" id="kanmusu3-lv">--</td><td class="kantai1-cond icon" id="kanmusu3-cond"></td><td class="kantai1-name" id="kanmusu3-name">なし</td>
+							<td class="kantai1-lv" id="kanmusu4-lv">--</td><td class="kantai1-cond icon" id="kanmusu4-cond"></td><td class="kantai1-name" id="kanmusu4-name">なし</td>
+						</tr>
+						<tr>
+							<td class="kantai1-lv" id="kanmusu5-lv">--</td><td class="kantai1-cond icon" id="kanmusu5-cond"></td><td class="kantai1-name" id="kanmusu5-name">なし</td>
+							<td class="kantai1-lv" id="kanmusu6-lv">--</td><td class="kantai1-cond icon" id="kanmusu6-cond"></td><td class="kantai1-name" id="kanmusu6-name">なし</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="kantai2">
+				<table cellspacing="0" cellpadding="0" id="kantai2-table">
+					<thead>
+						<tr><td><span class="icon">P</span> 2</td><td id="kantai2-name">第二艦隊</td></tr>
+					</thead>
+					<tbody>
+						<tr><td class="kantai-left">作戦</td><td class="kantai-detail" id="kantai2-mission">未取得</td></tr>
+						<tr><td class="kantai-left">帰投</td><td class="kantai-detail" id="kantai2-return">不明</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="kantai3">
+				<table cellspacing="0" cellpadding="0" id="kantai3-table">
+					<thead>
+						<tr><td><span class="icon">P</span> 3</td><td id="kantai3-name">第三艦隊</td></tr>
+					</thead>
+					<tbody>
+						<tr><td class="kantai-left">作戦</td><td class="kantai-detail" id="kantai3-mission">未取得</td></tr>
+						<tr><td class="kantai-left">帰投</td><td class="kantai-detail" id="kantai3-return">不明</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="kantai4">
+				<table cellspacing="0" cellpadding="0" id="kantai4-table">
+					<thead>
+						<tr><td><span class="icon">P</span> 4</td><td id="kantai4-name">第四艦隊</td></tr>
+					</thead>
+					<tbody>
+						<tr><td class="kantai-left">作戦</td><td class="kantai-detail" id="kantai4-mission">未取得</td></tr>
+						<tr><td class="kantai-left">帰投</td><td class="kantai-detail" id="kantai4-return">不明</td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="dock">
+				<div id="ndock">
+					<table cellspacing="0" cellpadding="0" id="ndock-table">
+						<thead>
+							<tr><td colspan="2">入渠</td></tr>
+						</thead>
+						<tbody>
+							<tr><td class="ndock-left" id="ndock1-name">ドック1</td><td class="ndock-detail" id="ndock1-time">未取得</td></tr>
+							<tr><td class="ndock-left" id="ndock2-name">ドック2</td><td class="ndock-detail" id="ndock2-time">未取得</td></tr>
+							<tr><td class="ndock-left" id="ndock3-name">ドック3</td><td class="ndock-detail" id="ndock3-time">未取得</td></tr>
+							<tr><td class="ndock-left" id="ndock4-name">ドック4</td><td class="ndock-detail" id="ndock4-time">未取得</td></tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="kdock">
+					<table cellspacing="0" cellpadding="0" id="kdock-table">
+						<thead>
+							<tr><td colspan="2">建造</td></tr>
+						</thead>
+						<tbody>
+							<tr><td class="kdock-left">ドック1</td><td class="kdock-detail" id="kdock1-time">未取得</td></tr>
+							<tr><td class="kdock-left">ドック2</td><td class="kdock-detail" id="kdock2-time">未取得</td></tr>
+							<tr><td class="kdock-left">ドック3</td><td class="kdock-detail" id="kdock3-time">未取得</td></tr>
+							<tr><td class="kdock-left">ドック4</td><td class="kdock-detail" id="kdock4-time">未取得</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
