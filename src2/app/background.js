@@ -50,6 +50,42 @@ Background.main = function() {
 			}
 		}.bind(this));
 	}.bind(this));
+
+	chrome.runtime.onConnect.addListener(function(p) {
+		this.port2 = p;
+		
+		this.port2.onMessage.addListener(function(message) {
+			switch (message.event) {
+				case 'screenshot':
+					this.handleScreenshot(message.value);
+					break;
+				default:
+					break;
+			}
+		}.bind(this));
+	}.bind(this));
+}.bind(Background);
+
+Background.handleScreenshot = function(dataUrl) {
+	var canvas = document.createElement('canvas');
+	
+	canvas.width = 800;
+	canvas.height = 480;
+	
+	var context = canvas.getContext('2d');
+	
+	var image = new Image();
+	
+	image.src = dataUrl;
+	
+	image.onload = function() {
+		context.drawImage(image, 0, 30, 800, 480, 0, 0, 800, 480);
+		
+		this.port.postMessage({
+			event: 'screenshot',
+			value: canvas.toDataURL()
+		});
+	}.bind(this);
 }.bind(Background);
 
 onload = Background.main;
