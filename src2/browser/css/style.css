@@ -1,0 +1,334 @@
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	font-family: 'Meiryo UI';
+}
+
+#game {
+	width: 800px;
+	height: 480px;
+	float: left;
+}
+
+iframe {
+	border: none;
+}
+
+/* Tipsy Override */
+
+.tipsy {
+	font-size: 12px !important;
+	opacity: 1 !important;
+}
+
+.tipsy table tr td:nth-child(1) {
+	text-align: right;
+	padding-right: 15px;
+	font-weight: bold;
+}
+
+.tipsy table tr td:nth-child(2) {
+	text-align: left;
+	min-width: 100px;
+}
+
+.tipsy table td {
+	height: 10px;
+}
+
+.tipsy .tipsy-inner {
+	max-width: 1000px !important;
+}
+
+/* ヘッダー */
+
+#header {
+	width: 1100px;
+	height: 30px;
+	background-color: #890725;
+	line-height: 30px;
+	color: white;
+	-webkit-user-select: none;
+	cursor: default;
+	font-size: 14px;
+}
+
+#header > div {
+	padding: 0px 5px;
+	display: inline;
+	opacity: 0.5;
+}
+
+#header > div.button:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+#header .label {
+	font-size: 12px;
+}
+
+/* 情報画面 */
+
+#info {
+	background-color: #252525;
+	color: white;
+	font-size: 12px;
+	width: 300px;
+	height: 480px;
+	-webkit-user-select: none;
+	cursor: default;
+	float: left;
+}
+
+/* 全般 */
+
+table {
+	border: none;
+}
+
+td {
+	text-align: center;
+	height: 20px;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.underline {
+	height: 2px;
+}
+
+.icon {
+	font-family: 'fontello';
+}
+
+/* 任務 */
+
+#quest-table {
+	width: 300px;
+}
+
+#quest-table thead td:nth-child(1) {
+	border-right: solid 1px #252525;
+	background-color: #007ACC;
+}
+
+#quest-table thead td:nth-child(2),
+#quest-table thead td:nth-child(3) {
+	background-color: #007ACC;
+}
+
+.quest-progress {
+	width: 45px;
+	border-right: solid 1px #007ACC;
+}
+
+.quest-type {
+	width: 35px;
+}
+
+.quest-name {
+	width: 220px;
+	padding-left: 5px;
+}
+
+.quest-underline {
+	position: fixed;
+	background-color: transparent;
+	right: 0;
+	width: 255px;
+}
+
+#quest1-underline {
+	top: 68px;
+}
+
+#quest2-underline {
+	top: 88px;
+}
+
+#quest3-underline {
+	top: 108px;
+}
+
+#quest4-underline {
+	top: 128px;
+}
+
+#quest5-underline {
+	top: 148px;
+}
+
+.quest-tooltip {
+	position: fixed;
+	background-color: transparent;
+	right: 0;
+	width: 300px;
+	height: 20px;
+}
+
+#quest1-tooltip {
+	top: 50px;
+}
+
+#quest2-tooltip {
+	top: 70px;
+}
+
+#quest3-tooltip {
+	top: 90px;
+}
+
+#quest4-tooltip {
+	top: 110px;
+}
+
+#quest5-tooltip {
+	top: 130px;
+}
+
+/* 第1艦隊 */
+
+#kantai1-table {
+	width: 300px;
+}
+
+#kantai1-table thead td {
+	background-color: #007ACC;
+}
+
+.kantai1-lv {
+	width: 30px;
+}
+
+.kantai1-cond {
+	width: 30px;
+	font-family: 'fontello';
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.kantai1-name {
+	width: 90px;
+}
+
+.kantai1-name:nth-child(odd) {
+	border-right: solid 1px #007ACC;
+}
+
+.kanmusu-tooltip {
+	position: fixed;
+	background-color: transparent;
+	width: 150px;
+	height: 20px;
+}
+
+#kanmusu1-tooltip {
+	top: 170px;
+	right: 150px;
+}
+
+#kanmusu2-tooltip {
+	top: 170px;
+	right: 0;
+}
+
+#kanmusu3-tooltip {
+	top: 190px;
+	right: 150px;
+}
+
+#kanmusu4-tooltip {
+	top: 190px;
+	right: 0;
+}
+
+#kanmusu5-tooltip {
+	top: 210px;
+	right: 150px;
+}
+
+#kanmusu6-tooltip {
+	top: 210px;
+	right: 0;
+}
+
+/* 第2-4艦隊 */
+
+#kantai2-table,
+#kantai3-table,
+#kantai4-table {
+	width: 300px;
+}
+
+#kantai2-table thead td,
+#kantai3-table thead td,
+#kantai4-table thead td {
+	background-color: #007ACC;
+}
+
+#kantai2-table thead td:nth-child(1),
+#kantai3-table thead td:nth-child(1),
+#kantai4-table thead td:nth-child(1) {
+	border-right: solid 1px #252525;
+}
+
+.kantai-left {
+	width: 60px;
+	border-right: solid 1px #007ACC;
+}
+
+.kantai-detail {
+	width: 240px;
+}
+
+/* 入渠 */
+
+#ndock-table {
+	width: 170px;
+	float: left;
+}
+
+#ndock-table thead td {
+	background-color: #007ACC;
+	border-right: solid 1px #252525;
+}
+
+.ndock-left {
+	width: 80px;
+}
+
+.ndock-detail {
+	width: 90px;
+	border-right: solid 1px #007ACC;
+}
+
+/* 建造 */
+
+#kdock-table {
+	width: 130px;
+	float: left;
+}
+
+#kdock-table thead td {
+	background-color: #007ACC;
+}
+
+.kdock-left {
+	width: 40px;
+}
+
+.kdock-detail {
+	width: 90px;
+}
