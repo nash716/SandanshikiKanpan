@@ -4,6 +4,9 @@
 	"version": "0.1",
 	"background": {
 		"scripts": [
+			"app/Constants.js",
+			"app/Experiences.js",
+			"app/definitions.js",
 			"app/Kancolle.js",
 			"app/background.js"
 		]
