@@ -19,6 +19,15 @@
 	},
 	"permissions": [
 		"proxy",
-		"tabs"
+		"tabs",
+		"http://www.dmm.com/*"
+	],
+	"content_scripts": [
+		{
+			"matches": [ "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/" ],
+			"js": [ "inject/scroll.js" ],
+			"run_at": "document_end",
+			"all_frames": true
+		}
 	]
 }
