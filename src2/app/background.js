@@ -33,15 +33,7 @@ Background.main = function() {
 		});
 		
 		this.port.onMessage.addListener(function(message) {
-			if (message.event == 'data') {
-				var proc = Kancolle.set(message);
-				
-				for (var i = 0; i < proc.length; i++) {
-					this.port2.postMessage(proc[i]);
-				}
-				return;
-			}
-			this.port2.postMessage(message);
+			this.handleMessage(IncomingPort.PORT1, message);
 		}.bind(this));
 		
 		Kancolle.start(function(proc) {
@@ -55,15 +47,34 @@ Background.main = function() {
 		this.port2 = p;
 		
 		this.port2.onMessage.addListener(function(message) {
-			switch (message.event) {
-				case 'screenshot':
-					this.handleScreenshot(message.value);
-					break;
-				default:
-					break;
-			}
+			this.handleMessage(IncomingPort.PORT2, message);
 		}.bind(this));
 	}.bind(this));
+}.bind(Background);
+
+Background.handleMessage = function(port, message) {
+	if (port == IncomingPort.PORT1) {
+		switch (message.event) {
+			case 'data':
+				var proc = Kancolle.set(message);
+				
+				for (var i = 0; i < proc.length; i++) {
+					this.port2.postMessage(proc[i]);
+				}
+				break;
+			default:
+				this.port2.postMessage(message);
+				break;
+		}
+	} else {
+		switch (message.event) {
+			case 'screenshot':
+				this.handleScreenshot(message.value);
+				break;
+			default:
+				break;
+		}
+	}
 }.bind(Background);
 
 Background.handleScreenshot = function(dataUrl) {

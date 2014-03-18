@@ -4,3 +4,8 @@ var QuestProgress = {
 	ALMOST: 2,
 	DONE: 3
 };
+
+var IncomingPort = {
+	PORT1: 0,
+	PORT2: 1
+};
