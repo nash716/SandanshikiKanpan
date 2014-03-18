@@ -46,7 +46,6 @@ chrome.app.runtime.onLaunched.addListener(function() {
 	port = chrome.runtime.connect(EXTENSION_ID);
 	
 	port.onMessage.addListener(function(message) {
-		console.log(message);
 		switch(message.event) {
 			case 'screenshot':
 				saveScreenshot(message.value);
