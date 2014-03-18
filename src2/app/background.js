@@ -36,6 +36,10 @@ Background.main = function() {
 			this.handleMessage(IncomingPort.PORT1, message);
 		}.bind(this));
 		
+		this.port.onDisconnect.addListener(function() {
+			this.port2.disconnect();
+		}.bind(this));
+		
 		Kancolle.start(function(proc) {
 			for (var i = 0; i < proc.length; i++) {
 				this.port2.postMessage(proc[i]);
@@ -48,6 +52,10 @@ Background.main = function() {
 		
 		this.port2.onMessage.addListener(function(message) {
 			this.handleMessage(IncomingPort.PORT2, message);
+		}.bind(this));
+		
+		this.port2.onDisconnect.addListener(function() {
+			this.port.disconnect();
 		}.bind(this));
 	}.bind(this));
 }.bind(Background);

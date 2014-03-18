@@ -54,6 +54,11 @@ chrome.app.runtime.onLaunched.addListener(function() {
 				break;
 		}
 	});
+	
+	// みんな死ぬしかないじゃない！！
+	port.onDisconnect.addListener(function() {
+		
+	});
 });
 
 function saveScreenshot(dataUrl) {

@@ -1,5 +1,6 @@
 var Browser = {
-	port: null
+	port: null,
+	forceExit: false
 };
 
 Browser.main = function() {
@@ -37,6 +38,12 @@ Browser.main = function() {
 				break;
 		}
 	}.bind(this));
+	
+	this.port.onDisconnect.addListener(function() {
+		window.alert('問題が発生しました。三段式甲板を終了します。');
+		this.forceExit = true;
+		window.close();
+	}.bind(this));
 }.bind(Browser);
 
 Browser.setValue = function(message) {
@@ -73,7 +80,7 @@ Browser.reload = function() {
 }.bind(Browser);
 
 Browser.unload = function() {
-	return 'この画面を閉じると艦これが終了されます。';
+	return this.forceExit ? undefined : 'この画面を閉じると艦これが終了されます。';
 }.bind(Browser);
 
 onload = Browser.main;
