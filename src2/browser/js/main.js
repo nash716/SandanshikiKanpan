@@ -69,7 +69,12 @@ Browser.takeScreenshot = function() {
 }.bind(Browser);
 
 Browser.reload = function() {
-	$('iframe').get(0).src = $('iframe').get(0).src;
+	if (confirm('本当にリロードしますか？')) $('iframe').get(0).src = $('iframe').get(0).src;
+}.bind(Browser);
+
+Browser.unload = function() {
+	return 'この画面を閉じると艦これが終了されます。';
 }.bind(Browser);
 
 onload = Browser.main;
+onbeforeunload = Browser.unload;
