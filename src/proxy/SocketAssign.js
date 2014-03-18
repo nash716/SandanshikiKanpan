@@ -2,7 +2,7 @@ var SocketAssign = function() {
 	this.clientId = -1;
 	this.remoteId = -1;
 	this.isCompleted = false;
-	this.isPosted = false;
+	this.isProcessing = false;
 	this.url = null;
 	this.remote = {
 		contentLength: -1,
@@ -18,3 +18,16 @@ var SocketAssign = function() {
 };
 
 heir.inherit(SocketAssign, EventEmitter);
+
+SocketAssign.prototype.destroy = function() {
+	chrome.sockets.tcp.disconnect(this.clientId);
+	chrome.sockets.tcp.disconnect(this.remoteId);
+	
+	for (var i = 0; i < this.remote.data.length; i++) {
+		this.remote.data[i].value = null;
+	}
+	
+	for (var i = 0; i < this.client.data.length; i++) {
+		this.client.data[i].value = null;
+	}
+};

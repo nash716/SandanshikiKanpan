@@ -129,9 +129,6 @@ ProxyCallbacks.tcp.remote.checkData = function(clientId, disconnected) {
 		
 		this.socketAssign[clientId].isCompleted = true;
 		
-		//chrome.sockets.tcp.disconnect(this.socketAssign[clientId].clientId);
-		//chrome.sockets.tcp.disconnect(this.socketAssign[clientId].remoteId);
-		
 		this.trigger(this.socketAssign[clientId].url.fullPath, [ clientId ]);
 	}
 }

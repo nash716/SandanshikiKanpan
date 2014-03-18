@@ -8,7 +8,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 	
 	for (var i = 0; i < Constants.HOOK_URL.length; i++) {
 		proxy.on(Constants.HOOK_URL[i], function(clientId) {
-			if (this.socketAssign[clientId].isPosted) return;
+			if (!this.socketAssign[clientId] || this.socketAssign[clientId].isProcessing) return;
 			
 			var dataArr = [ ];
 			
@@ -32,8 +32,12 @@ chrome.app.runtime.onLaunched.addListener(function() {
 					json: JSON.parse(json.substring('svdata='.length))
 				});
 				
-				this.socketAssign[clientId].isPosted = true;
+				this.socketAssign[clientId].destroy.bind(this.socketAssign[clientId])();
+				
+				delete this.socketAssign[clientId];
 			}.bind(this);
+			
+			this.socketAssign[clientId].isProcessing = true;
 			
 			reader.readAsText(blob);
 		}.bind(proxy));
