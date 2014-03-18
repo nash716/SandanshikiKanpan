@@ -1,6 +1,6 @@
 {
-	"name": "三段式甲板",
-	"description": "艦これ専用ブラウザ",
+	"name": "三段式甲板 (Extension)",
+	"description": "Chrome で艦これを快適に遊ぶための拡張機能です。",
 	"version": "0.1",
 	"background": {
 		"scripts": [

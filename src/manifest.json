@@ -1,7 +1,7 @@
 {
-	"name": "三段式甲板 プロキシ",
-	"description": "三段式甲板の利用に必要なプロキシサーバです。",
-	"version": "0.1",
+	"name": "三段式甲板",
+	"description": "Chrome で艦これを快適に遊ぶためのアプリです。",
+	"version": "0.1.0.1",
 	"app": {
 		"background": {
 			"scripts": [
