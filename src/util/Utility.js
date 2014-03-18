@@ -1,5 +1,4 @@
 var DEBUG_MODE = true;
-var EXTENSION_ID = 'aekcocjibheiolokknkcbmidmcklgmaa';
 
 // prototype 拡張
 
@@ -57,3 +56,11 @@ Util.error = function(str) {
 		Util.log.apply(null, arguments);
 	}
 }
+
+Util.env = function(production, develop) {
+	if (DEBUG_MODE) return develop;
+	
+	return production;
+};
+
+var EXTENSION_ID = Util.env('mmijblfmombcmbebjdofmnjaphcankli', 'aekcocjibheiolokknkcbmidmcklgmaa');
