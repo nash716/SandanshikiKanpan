@@ -42,7 +42,7 @@ Background.main = function() {
 		
 		Kancolle.start(function(proc) {
 			for (var i = 0; i < proc.length; i++) {
-				this.port2.postMessage(proc[i]);
+				this.handleMessage(IncomingPort.PORT1, proc[i]);
 			}
 		}.bind(this));
 	}.bind(this));
@@ -67,8 +67,16 @@ Background.handleMessage = function(port, message) {
 				var proc = Kancolle.set(message);
 				
 				for (var i = 0; i < proc.length; i++) {
-					this.port2.postMessage(proc[i]);
+					this.handleMessage(port, proc[i]);
 				}
+				break;
+			case 'notification':
+				chrome.notifications.create('', {
+					type: 'basic',
+					iconUrl: '../manifest/icon128.png',
+					title: '三段式甲板',
+					message: message.value
+				}, function() { });
 				break;
 			default:
 				this.port2.postMessage(message);

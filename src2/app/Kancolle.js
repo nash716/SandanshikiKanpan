@@ -644,6 +644,25 @@ Kancolle.util.ndock = function() {
 					return ret;
 				})(this.dock[i].complete)
 			});
+			
+			var diff = this.dock[i].complete - (new Date() * 1);
+			
+			if (diff > 59 * 1000 && diff < 60 * 1000) { // 1分前に通知
+				ret.push({
+					event: 'notification',
+					value: (function(dock, id) {
+						var ret = '';
+						
+						if (Kancolle.master.ships.raw != null && Kancolle.user.ships.raw != null) {
+							ret += Kancolle.master.ships.names[Kancolle.user.ships.ship[id].sortno] + 'の整備が終了しました！';
+						} else {
+							ret += '第' + dock + 'ドックの艦娘の整備が終了しました！';
+						}
+						
+						return ret;
+					})(i + 1, this.dock[i].id)
+				});
+			}
 		}
 	}
 	
@@ -707,6 +726,16 @@ Kancolle.util.kdock = function() {
 					return ret;
 				})(this.dock[i].complete)
 			});
+			
+			var diff = this.dock[i].complete - (new Date() * 1);
+			
+			if (diff < 0 && diff > -1 * 1000) {
+				ret.push({
+					event: 'notification',
+					value: '第' + (i + 1) + 'ドックの艦娘の建造が完了しました！'
+				});
+			}
+			
 		} else if (this.dock[i].state == 3) {
 			ret.push({
 				event: 'change',
@@ -803,6 +832,15 @@ Kancolle.util.decks = function() {
 						return ret;
 					}.bind(this))(this.deck[i].ships)
 				});
+				
+				var diff = this.deck[i].complete - (new Date() * 1);
+				
+				if (diff > 59 * 1000 && diff < 60 * 1000) { // 1分前に通知
+					ret.push({
+						event: 'notification',
+						value: '第' + (i + 1) + '艦隊が' + Constants.ENSEI[this.deck[i].mission] + 'から帰投しました！'
+					});
+				}
 			} else {
 				ret.push({
 					event: 'change',
